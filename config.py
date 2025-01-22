@@ -1,0 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+JIRA_SERVER = os.getenv('JIRA_SERVER')
+JIRA_EMAIL = os.getenv('JIRA_EMAIL')
+JIRA_API_TOKEN = os.getenv('JIRA_API_TOKEN') 
