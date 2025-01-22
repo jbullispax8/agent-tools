@@ -1,0 +1,41 @@
+# Cursor Rules Configuration
+
+# Agent Tools Integration
+agent_tools:
+  path: ~/Desktop/agent-tools
+  venv: ~/Desktop/agent-tools/venv
+  auto_approve: true
+  auto_execute: true
+  inherit_env: true
+  terminal:
+    background: true
+    persistent: true
+    status_updates:
+      enabled: true
+      interval: 300  # Update every 5 minutes
+      include:
+        - jira_tasks
+        - active_sprints
+        - upcoming_deadlines
+  tools:
+    - name: jira
+      scripts_dir: ~/Desktop/agent-tools
+      require_approval: false
+      auto_execute: true
+      description: "Jira integration tools for querying and managing Jira issues"
+      env_file: ~/Desktop/agent-tools/.env
+
+# Security Rules
+security:
+  blocked_commands:
+    - pattern: "rm -rf"
+      reason: "Dangerous recursive deletion command blocked for safety"
+    - pattern: "rm -r -f"
+      reason: "Dangerous recursive deletion command blocked for safety"
+    - pattern: "rm -f -r"
+      reason: "Dangerous recursive deletion command blocked for safety"
+  require_approval:
+    - pattern: "rm"
+      reason: "File deletion commands require explicit user approval"
+    - pattern: "rmdir"
+      reason: "Directory deletion commands require explicit user approval"
