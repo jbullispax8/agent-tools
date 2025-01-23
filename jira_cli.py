@@ -14,7 +14,8 @@ def main():
         'get-related-issues',
         'update-status',
         'create-issue',
-        'update-description'
+        'update-description',
+        'add-comment'
     ])
     parser.add_argument('--status', help='Filter by status or new status for update')
     parser.add_argument('--priority', help='Filter by priority')
@@ -25,12 +26,26 @@ def main():
     parser.add_argument('--summary', help='Summary for new issue')
     parser.add_argument('--description', help='Description for new issue')
     parser.add_argument('--issue-type', help='Issue type (default: Task)', default='Task')
+    parser.add_argument('--comment', help='Comment text for add-comment command. Use \\n for newlines.')
     
     args = parser.parse_args()
     jira = JiraTools()
     
     try:
-        if args.command == 'update-description':
+        if args.command == 'add-comment':
+            if not args.issue_key or not args.comment:
+                print("Error: --issue-key and --comment are required for add-comment command")
+                return
+            # Process the comment text to handle newlines
+            comment_text = args.comment.encode().decode('unicode_escape')
+            comment = jira.add_comment(args.issue_key, comment_text)
+            if comment:
+                print(f"Successfully added comment to {args.issue_key}")
+                print("Comment:", args.comment)
+            else:
+                print(f"Failed to add comment to {args.issue_key}")
+                
+        elif args.command == 'update-description':
             if not args.issue_key or not args.description:
                 print("Error: --issue-key and --description are required for update-description command")
                 return
@@ -51,9 +66,10 @@ def main():
                 description=args.description,
                 issue_type=args.issue_type
             )
-            print(f"Created issue: {issue.key}")
-            details = jira.get_issue_details(issue.key)
-            print(json.dumps(details, indent=2))
+            if issue:
+                print(f"Successfully created issue: {issue.key}")
+            else:
+                print("Failed to create issue")
         
         elif args.command == 'update-status':
             if not args.issue_key or not args.status:

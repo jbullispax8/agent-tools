@@ -1,7 +1,9 @@
 # Cursor Rules Configuration
+# This file points to the centralized configuration in agent-tools
 
 # Agent Tools Integration
 agent_tools:
+  config_file: ../../agent-tools/config.yaml
   path: ~/Desktop/agent-tools
   venv: ~/Desktop/agent-tools/venv
   auto_approve: true
@@ -23,6 +25,12 @@ agent_tools:
       require_approval: false
       auto_execute: true
       description: "Jira integration tools for querying and managing Jira issues"
+      env_file: ~/Desktop/agent-tools/.env
+    - name: redshift
+      scripts_dir: ~/Desktop/agent-tools
+      require_approval: true
+      auto_execute: false
+      description: "Redshift integration for executing database queries"
       env_file: ~/Desktop/agent-tools/.env
 
 # Security Rules
