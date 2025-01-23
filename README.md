@@ -144,6 +144,77 @@ Each method returns structured data that the agent can use to:
 - Keep your API token secure and rotate it regularly
 - Use environment variables for sensitive information
 
+# Redshift Integration for Cursor Agent
+
+This toolkit also includes a Redshift integration that allows you to query your Redshift database through natural language interactions with the Cursor agent.
+
+## Redshift Configuration
+
+1. Ensure your `.env` file includes Redshift credentials:
+```
+# Redshift Configuration
+REDSHIFT_HOST=your-cluster.region.redshift.amazonaws.com
+REDSHIFT_PORT=5439
+REDSHIFT_DATABASE=your_database
+REDSHIFT_USER=your_username
+REDSHIFT_PASSWORD=your_password
+```
+
+## Redshift Query Examples
+
+You can interact with your Redshift database through natural language commands. Here are some example interactions:
+
+- "Show me all active subscriptions for vendor X"
+- "Query the total number of customers by product"
+- "Find all transactions in the last 30 days"
+- "Get the schema information for table Y"
+
+## Technical Implementation
+
+The toolkit provides these core methods for Redshift operations:
+
+```python
+from redshift_client import RedshiftClient, run_query
+
+# Using the context manager
+with RedshiftClient() as client:
+    # Execute a query and get results as dictionaries
+    results = client.execute_query(
+        "SELECT * FROM schema.table WHERE condition = %s",
+        params={'condition': 'value'}
+    )
+    
+    # Execute a query and get results as a pandas DataFrame
+    df = client.query_to_dataframe(
+        "SELECT * FROM schema.table WHERE condition = %s",
+        params={'condition': 'value'}
+    )
+
+# Or use the convenience function
+results = run_query(
+    "SELECT * FROM schema.table WHERE condition = %s",
+    params={'condition': 'value'},
+    output_format='df'  # or 'dict' for dictionary output
+)
+```
+
+### Available Methods
+
+#### RedshiftClient Class
+- `execute_query(query, params=None)`: Execute a query and return results as a list of dictionaries
+- `query_to_dataframe(query, params=None)`: Execute a query and return results as a pandas DataFrame
+- `close()`: Close the database connection
+
+#### Convenience Functions
+- `run_query(query, params=None, output_format='dict')`: Execute a query and return results in the specified format
+
+### Features
+- Automatic connection management with context manager
+- Support for parameterized queries
+- Multiple output formats (dictionaries or pandas DataFrames)
+- Connection pooling and automatic cleanup
+- Error handling and connection retry logic
+
 ## Contributing
 
 1. Fork the repository
