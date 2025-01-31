@@ -35,10 +35,26 @@ IMPORTANT: Cursor must read and follow these instructions at the start of each s
    - `rm -rf`
    - `rm -r -f`
    - `rm -f -r`
+   - Any Confluence page deletion operations
+   - Any Confluence space deletion operations
+
 2. **Approval Required**
    - Any `rm` command
    - Any `rmdir` command
    - File deletion operations
+
+3. **Permanently Disabled Operations**
+   - Confluence page deletion (disabled at code level)
+   - Confluence space deletion (disabled at code level)
+   - Any destructive operations in Confluence
+   - Any operations outside personal Confluence space
+
+4. **Confluence Safety Rules**
+   - All operations restricted to personal space only
+   - No deletion operations allowed
+   - No space administration operations
+   - Content creation/updates only in personal space
+   - Space key must match CONFLUENCE_PERSONAL_SPACE environment variable
 
 ## Tool Configuration
 
@@ -122,6 +138,19 @@ issues = jira.search_issues('project = PROJECT AND status = "In Progress"')
 ```
 
 ## Confluence Integration
+
+### Important Safety Notes
+1. **Deletion Protection**
+   - Page deletion is permanently disabled
+   - Space deletion is permanently disabled
+   - These restrictions cannot be overridden
+   - Contact administrator for any deletion needs
+
+2. **Space Restrictions**
+   - Operations limited to personal space only
+   - Personal space key defined in CONFLUENCE_PERSONAL_SPACE
+   - Attempts to operate in other spaces will fail
+   - No exceptions to space restrictions
 
 ### Key Features
 1. **Content Management**
