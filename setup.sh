@@ -28,7 +28,8 @@ pip install -r requirements.txt
 echo -e "${GREEN}Setup complete! Virtual environment is activated and packages are installed.${NC}"
 echo -e "${BLUE}Available tools in this environment:${NC}"
 echo "1. jira-cli: Command line interface for Jira operations"
-echo "2. redshift-client: Interface for Redshift database operations"
+echo "2. confluence-cli: Command line interface for Confluence operations (restricted to personal space)"
+echo "3. redshift-client: Interface for Redshift database operations"
 
 echo -e "\n${BLUE}To activate the virtual environment in the future, run:${NC}"
 echo "source venv/bin/activate" 
