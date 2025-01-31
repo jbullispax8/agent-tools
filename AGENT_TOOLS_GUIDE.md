@@ -54,6 +54,7 @@ JIRA_API_TOKEN=your-api-token
 CONFLUENCE_URL=https://your-domain.atlassian.net
 CONFLUENCE_USERNAME=your-username@example.com
 CONFLUENCE_API_TOKEN=your-confluence-api-token
+CONFLUENCE_PERSONAL_SPACE=your-personal-space-key  # e.g. ~617961d7a98971007068163d
 
 # Redshift Configuration (Required for Redshift integration)
 REDSHIFT_HOST=your-cluster.region.redshift.amazonaws.com

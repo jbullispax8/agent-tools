@@ -44,10 +44,11 @@ def main():
             result = confluence.get_page(args.page_id)
             
         elif args.command == 'create-page':
-            if not all([args.space_key, args.title, args.body]):
-                print("Error: --space-key, --title, and --body are required for create-page command")
+            if not all([args.title, args.body]):
+                print("Error: --title and --body are required for create-page command")
                 return
-            result = confluence.create_page(args.space_key, args.title, args.body, args.parent_id)
+            # Always use personal space for page creation
+            result = confluence.create_page(confluence.personal_space_key, args.title, args.body, args.parent_id)
             
         elif args.command == 'update-page':
             if not all([args.page_id, args.title, args.body]):

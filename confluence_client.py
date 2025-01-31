@@ -1,11 +1,17 @@
 from atlassian import Confluence
-from config import CONFLUENCE_URL, CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN
+from config import (
+    CONFLUENCE_URL,
+    CONFLUENCE_USERNAME,
+    CONFLUENCE_API_TOKEN,
+    CONFLUENCE_PERSONAL_SPACE
+)
 from typing import Optional, Dict, List, Union
 import json
 
 class ConfluenceTools:
     def __init__(self):
         self.client = self._initialize_client()
+        self.personal_space_key = self._get_personal_space_key()
 
     def _initialize_client(self) -> Confluence:
         """Initialize Confluence client with credentials from config."""
@@ -16,22 +22,34 @@ class ConfluenceTools:
             cloud=True  # Set to False if using Confluence Server
         )
 
+    def _get_personal_space_key(self) -> str:
+        """Get the personal space key for the authenticated user."""
+        if not CONFLUENCE_PERSONAL_SPACE:
+            raise ValueError("CONFLUENCE_PERSONAL_SPACE environment variable is not set")
+        return CONFLUENCE_PERSONAL_SPACE
+
     def get_page(self, page_id: str) -> Dict:
         """Get a Confluence page by its ID."""
         return self.client.get_page_by_id(page_id, expand='body.storage,version,space')
 
     def create_page(self, space_key: str, title: str, body: str, parent_id: Optional[str] = None) -> Dict:
-        """Create a new Confluence page.
+        """Create a new Confluence page in the user's personal space.
         
         Args:
-            space_key: The key of the space where the page will be created
+            space_key: The key of the space where the page will be created (must be user's personal space)
             title: The title of the page
             body: The content of the page in storage format (HTML)
             parent_id: Optional ID of the parent page
         
         Returns:
             Dict containing the created page information
+        
+        Raises:
+            ValueError: If attempting to create a page outside the user's personal space
         """
+        if space_key != self.personal_space_key:
+            raise ValueError(f"Pages can only be created in your personal space ({self.personal_space_key})")
+            
         return self.client.create_page(
             space=space_key,
             title=title,
