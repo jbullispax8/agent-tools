@@ -83,10 +83,10 @@ class ConfluenceTools:
         Args:
             page_id: The ID of the page to delete
         
-        Returns:
-            bool indicating success
+        Raises:
+            NotImplementedError: This method is disabled for safety reasons
         """
-        return self.client.remove_page(page_id)
+        raise NotImplementedError("Page deletion is disabled for safety reasons. Please contact your administrator if you need to delete a page.")
 
     def get_page_children(self, page_id: str) -> List[Dict]:
         """Get all child pages of a given page.

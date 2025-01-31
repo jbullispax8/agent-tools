@@ -10,7 +10,6 @@ def main():
         'get-page',
         'create-page',
         'update-page',
-        'delete-page',
         'get-children',
         'search',
         'get-space-content',
@@ -20,7 +19,7 @@ def main():
         'attach-file',
         'get-attachments',
         'export-pdf'
-    ])
+    ], help='Note: Page deletion is disabled for safety reasons')
     parser.add_argument('--page-id', help='Page ID for specific page commands')
     parser.add_argument('--space-key', help='Space key for space-specific commands')
     parser.add_argument('--title', help='Title for page creation/update')
@@ -55,12 +54,6 @@ def main():
                 print("Error: --page-id, --title, and --body are required for update-page command")
                 return
             result = confluence.update_page(args.page_id, args.title, args.body)
-            
-        elif args.command == 'delete-page':
-            if not args.page_id:
-                print("Error: --page-id is required for delete-page command")
-                return
-            result = confluence.delete_page(args.page_id)
             
         elif args.command == 'get-children':
             if not args.page_id:
