@@ -137,6 +137,93 @@ issues = jira.search_issues('project = PROJECT AND status = "In Progress"')
 ./jira_cli.py get-issue --issue-key PROJECT-123
 ```
 
+### Jira Markdown Guide
+When adding comments or updating Jira tickets, use the following markdown syntax:
+
+1. **Headers**
+   ```
+   h1. Top Level Header
+   h2. Second Level Header
+   h3. Third Level Header
+   ```
+
+2. **Text Formatting**
+   ```
+   *bold text*
+   _italic text_
+   {{monospace}} or {noformat}code{noformat}
+   {color:red}colored text{color}
+   ```
+
+3. **Lists**
+   ```
+   * Bullet point
+   # Numbered list
+   - Another bullet style
+   ```
+
+4. **Tables**
+   ```
+   ||Header 1||Header 2||Header 3||
+   |Cell 1|Cell 2|Cell 3|
+   ```
+
+5. **Panels and Sections**
+   ```
+   {panel:title=Panel Title|borderStyle=dashed|borderColor=#ccc}
+   Panel content
+   {panel}
+   ```
+
+6. **Status and Icons**
+   ```
+   {status:resolved}
+   {color:green}✓{color}
+   (!tick.png!)
+   ```
+
+7. **Code Blocks**
+   ```
+   {code:java}
+   public class Example {
+       // Your code here
+   }
+   {code}
+   ```
+
+8. **Links**
+   ```
+   [Link Text|http://example.com]
+   {anchor:anchorname}
+   ```
+
+Example of a well-formatted Jira comment:
+```
+h1. Feature Implementation Status {color:green}✓{color}
+
+h2. Completed Components
+* Implemented core functionality
+* Added unit tests
+* Updated documentation
+
+h2. Technical Details
+||Component||Status||Notes||
+|Backend API|Complete|All endpoints tested|
+|Frontend UI|In Progress|90% complete|
+
+h2. Code Changes
+{code:java}
+public void newFeature() {
+    // Implementation
+}
+{code}
+
+h2. Next Steps
+* Deploy to staging
+* Run integration tests
+* Update user documentation
+```
+
 ## Confluence Integration
 
 ### Important Safety Notes
