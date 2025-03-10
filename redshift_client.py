@@ -15,6 +15,7 @@ class RedshiftClient:
         self._connect()
         self.schema_cache = {}
         self.table_cache = None
+        self.docs_read = {}  # Track which documentation has been read
 
     def _connect(self):
         """Establish connection to Redshift"""
@@ -29,6 +30,36 @@ class RedshiftClient:
             self.cursor = self.conn.cursor(cursor_factory=RealDictCursor)
         except Exception as e:
             raise ConnectionError(f"Failed to connect to Redshift: {str(e)}")
+
+    def _check_documentation(self, query: str):
+        """
+        Check for relevant documentation based on the query content
+        and display it to ensure important notes are considered
+        
+        Args:
+            query: SQL query string
+        """
+        # Check if query involves subscription table
+        if re.search(r'(?:FROM|JOIN)\s+(?:cc\.)?subscription', query, re.IGNORECASE):
+            # Check if query is determining active subscriptions
+            if 'status' in query.lower() and 'active' in query.lower() and 'end_date is null' not in query.lower():
+                print("\n⚠️ WARNING: SUBSCRIPTION STATUS FIELD IS UNRELIABLE ⚠️")
+                print("=" * 60)
+                
+                # Read and display the subscription status note
+                doc_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'subscription_status_note.txt')
+                if os.path.exists(doc_path):
+                    with open(doc_path, 'r') as f:
+                        print(f.read())
+                else:
+                    print("IMPORTANT: The subscription status field is unreliable. Always use end_date IS NULL to determine active subscriptions.")
+                
+                print("=" * 60)
+                print("Consider modifying your query to use 'end_date IS NULL' instead of status='Active'")
+                print("=" * 60 + "\n")
+                
+                # Mark this documentation as read
+                self.docs_read['subscription_status'] = True
 
     def get_available_tables(self, schema: str = 'cc') -> List[str]:
         """
@@ -94,6 +125,9 @@ class RedshiftClient:
             List of dictionaries containing query results
         """
         try:
+            # Check for relevant documentation before executing the query
+            self._check_documentation(query)
+            
             # First, get all available tables
             print("\nAvailable tables in schema:")
             tables = self.get_available_tables()
