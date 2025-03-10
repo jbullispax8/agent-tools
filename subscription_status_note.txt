@@ -1,0 +1,1 @@
+IMPORTANT: The subscription status field is unreliable. Always use end_date IS NULL to determine active subscriptions.
