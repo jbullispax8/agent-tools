@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+ # Database Tables Guide
+
+## Critical Note on Subscription Status
+
+The status field in the subscription table is unreliable for determining whether a subscription is active. The only reliable way to determine if a subscription is active is to check if end_date IS NULL.
